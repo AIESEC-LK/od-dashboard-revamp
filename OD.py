@@ -8,6 +8,7 @@ import plotly.express as px
 import subprocess
 import sys
 import os
+import time
 
 icon_path = 'https://aiesec.lk/data/dist/images/favicon.png'
 st.set_page_config(
@@ -72,6 +73,7 @@ xdi_col="#f85c44"
 hdi_col="#38c49c"
 odi_col="#086cb4"
 gen="#cccccc"
+
 
 def plot_bubble_chart(filtered_data2):
     # Bubble plot using Plotly
@@ -174,10 +176,10 @@ def gen_bar_chart(selected_entity, selected_month, data):
     st.altair_chart(combined_chart, use_container_width=True)
 
 def display_kpi_metrics(selected_entity, selected_month, kpis, title, data):
-    st.markdown(
-        f"<h7 style='color: white;'>{title}</h7>", 
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     f"<h7 style='color: white;'>{title}</h7>", 
+    #     unsafe_allow_html=True
+    # )
 
     # Filter data based on the selected entity and month
     data = data[(data['entity'] == selected_entity) & (data['month_name'] == selected_month)]
@@ -203,20 +205,21 @@ def display_kpi_metrics(selected_entity, selected_month, kpis, title, data):
                     <div style="
                         background-color: #0076b6;
                         border-radius: 10px;
-                        padding: 10px;
+                        padding: 5px;
                         margin: 5px;
+                        text-align: center; /* Center align text */
                     ">
-                        <p>{kpi_names[idx]}</p>
-                        <h3>{kpi_values[idx]}</h3
+                        <p style="margin: 0;">{kpi_names[idx]}</p> <!-- Add margin: 0; to remove default margin -->
+                        <h3 style="margin: 0;">{kpi_values[idx]}</h3> <!-- Add margin: 0; to remove default margin -->
                     </div>
                     """
                 , unsafe_allow_html=True)
 
 def display_kpi_metrics2(selected_entity, selected_month, kpis, title, data):
-    st.markdown(
-        f"<h7 style='color: white;'>{title}</h7>", 
-        unsafe_allow_html=True
-    )
+    # st.markdown(
+    #     f"<h7 style='color: white;'>{title}</h7>", 
+    #     unsafe_allow_html=True
+    # )
 
     # Filter data based on the selected entity and month
     data = data[(data['entity'] == selected_entity) & (data['month_name'] == selected_month)]
@@ -242,29 +245,117 @@ def display_kpi_metrics2(selected_entity, selected_month, kpis, title, data):
                     <div style="
                         background-color: #0076b6;
                         border-radius: 10px;
-                        padding: 10px;
+                        padding: 5px;
                         margin: 5px;
+                        height: 215px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
                     ">
-                        <p>{kpi_names[idx]}</p>
-                        <h3>{kpi_values[idx]}</h3
+                        <p style="margin: 0;">{kpi_names[idx]}</p> <!-- Add margin: 0; to remove default margin -->
+                        <h3 style="margin: 0;">{kpi_values[idx]}</h3> <!-- Add margin: 0; to remove default margin -->
                     </div>
                     """
                 , unsafe_allow_html=True)
-     
 
+def display_kpi_metrics3(selected_entity, selected_month, kpis, title, data):
 
+    # Filter data based on the selected entity and month
+    data = data[(data['entity'] == selected_entity) & (data['month_name'] == selected_month)]
+
+    # Get KPI values and names from the filtered data
+    kpi_values = data[kpis].values[0]
+    kpi_names = kpis
+
+    num_cols = 1  # Number of columns to display KPIs
+    num_kpis = len(kpi_values)
+    
+    # Calculate the number of rows needed based on the number of KPIs and columns
+    num_rows = (num_kpis + num_cols - 1) // num_cols
+
+    # Iterate over the rows to display KPIs in rows of 7
+    for i in range(num_rows):
+        cols = st.columns(num_cols)
+        for j in range(num_cols):
+            idx = i * num_cols + j
+            if idx < num_kpis:
+                cols[j].markdown(
+                    f"""
+                    <div style="
+                        background-color: #0076b6;
+                        border-radius: 10px;
+                        padding: 5px;
+                        margin: 5px;
+                        height: 120px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    ">
+                        <p style="margin: 0;">{kpi_names[idx]}</p> <!-- Add margin: 0; to remove default margin -->
+                        <h3 style="margin: 0;">{kpi_values[idx]}</h3> <!-- Add margin: 0; to remove default margin -->
+                    </div>
+                    """
+                , unsafe_allow_html=True)
+
+def display_kpi_metrics4(selected_entity, selected_month, kpis, title, data):
+
+    # Filter data based on the selected entity and month
+    data = data[(data['entity'] == selected_entity) & (data['month_name'] == selected_month)]
+
+    # Get KPI values and names from the filtered data
+    kpi_values = data[kpis].values[0]
+    kpi_names = kpis
+
+    num_cols = 1  # Number of columns to display KPIs
+    num_kpis = len(kpi_values)
+    
+    # Calculate the number of rows needed based on the number of KPIs and columns
+    num_rows = (num_kpis + num_cols - 1) // num_cols
+
+    # Iterate over the rows to display KPIs in rows of 7
+    for i in range(num_rows):
+        cols = st.columns(num_cols)
+        for j in range(num_cols):
+            idx = i * num_cols + j
+            if idx < num_kpis:
+                cols[j].markdown(
+                    f"""
+                    <div style="
+                        background-color: #0076b6;
+                        border-radius: 10px;
+                        padding: 5px;
+                        margin: 5px;
+                        height: 265px;
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        text-align: center;
+                    ">
+                        <p style="margin: 0;">{kpi_names[idx]}</p> <!-- Add margin: 0; to remove default margin -->
+                        <h3 style="margin: 0;">{kpi_values[idx]}</h3> <!-- Add margin: 0; to remove default margin -->
+                    </div>
+                    """
+                , unsafe_allow_html=True)
+
+# SECTION 1 - KPIs
+# Define 2 Columns
 col1, col2 = st.columns([7, 3])
 # Applying custom CSS to adjust column widths
 st.markdown(
     """
     <style>
     .css-1ikpi7r {
-        width: 70%;
+        width: 60%;
         padding: 0px;
         margin: 0px;
     }
     .css-o5mxxx {
-        width: 30%;
+        width: 40%;
         padding: 0px;
         margin: 0px;
     }
@@ -272,7 +363,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
+# KPIs
 with col1:
     xdi_kpis = ['DXP', 'iGTa', 'iGTe', 'iGV', 'oGTa', 'oGTe', 'oGV']
     display_kpi_metrics(selected_entity, selected_month, xdi_kpis, "XDI Scores",data)
@@ -289,24 +380,54 @@ with col1:
     """
 with col2:
     odi_kpis = ['XDI', 'HDI', 'ODI']
-    rank_kpis = ['ODI Rank', 'XDI Rank', 'HDI Rank']
 
     display_kpi_metrics2(selected_entity, selected_month, odi_kpis, "ODI Scores", data)
+    
+
+# SECTION 2  
+# Define the columns with specified widths
+col1, col2, col3 = st.columns([8, 1, 1])  # 70%, 15%, 15%
+# Applying custom CSS to adjust column widths
+st.markdown(
+    """
+    <style>
+    .css-1ikpi7r { /* CSS class for the first column */
+        width: 80%; /* Set width to 70% */
+        padding: 0px; /* Remove padding */
+        margin: 0px; /* Remove margin */
+    }
+    .css-o5mxxx { /* CSS class for the second and third columns */
+        width: 10%; /* Set width to 15% */
+        padding: 0px; /* Remove padding */
+        margin: 0px; /* Remove margin */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+# Bar chart Column
+with col1:
+    # Generate bar chart
+    gen_bar_chart(selected_entity, selected_month, data)
+# KPI Column1
+with col2:
+    XDI_kpi = ['XDI Rank']
+    display_kpi_metrics3(selected_entity, selected_month,XDI_kpi, "XDI Rank", data_rank)
     """
 
     """
-    display_kpi_metrics2(selected_entity, selected_month, rank_kpis, "ODI Ranks", data_rank)
+    HDI_kpi = ['HDI Rank']
+    display_kpi_metrics3(selected_entity, selected_month, HDI_kpi, "HDI Rank", data_rank)
+# KPI Column2
+with col3:
+    ODI_kpi = ['ODI Rank']
+    display_kpi_metrics4(selected_entity, selected_month, ODI_kpi, "ODI Rank", data_rank)
 
-    """
 
 
-    """
-# Generate bar chart
-gen_bar_chart(selected_entity, selected_month, data)
-
+# SECTION 3
 # Create three columns for line charts
 col1, col2, col3 = st.columns(3)
-
 # Plot each chart in a separate column
 with col1:
     plot_score_line_chart(filtered_data_entity, 'XDI', xdi_col)
@@ -317,9 +438,9 @@ with col2:
 with col3:
     plot_score_line_chart(filtered_data_entity, 'ODI', odi_col)
 
+#SECTION 4
 # Create three columns for bar charts
 col1, col2, col3 = st.columns(3)
-
 # Plot each chart in a separate column
 with col1:
     plot_score_bar_chart(filtered_data2, 'XDI', xdi_col)
@@ -330,12 +451,14 @@ with col2:
 with col3:
     plot_score_bar_chart(filtered_data2, 'ODI', odi_col)
 
+
+#SECTION 5
 # Display the DataFrame with functions in one column and selected entities
 filtered_data2 = data[data['month_name'] == selected_month]
 pivot_data = filtered_data2.set_index('entity').T.drop('month_name')
 
 # Create three columns for line charts
-col1, col2= st.columns(2)
+col1, col2 = st.columns([6.5, 3.5])
 
 # Plot each chart in a separate column
 with col1:
@@ -352,15 +475,22 @@ with col2:
     )
     plot_bubble_chart(filtered_data2)
 
+
+
 # Create three columns for bar charts
 col1, col2 = st.columns(2)
 
-selected_function = st.selectbox('Select Function', function_list)
-
 st.subheader('Functional Analysis')
+
+st.write("<br>", unsafe_allow_html=True)
+
+selected_function = st.selectbox('Select Function', function_list)
 
 # Display the relevant function data based on the selected function
 function_data = pivot_data.loc[[selected_function]].reset_index(drop=True)
+
+st.write("<br>", unsafe_allow_html=True)
+
 st.dataframe(function_data, use_container_width=True, hide_index=True)
 
 
@@ -385,3 +515,7 @@ columns_to_display = [col for col in data_core_filtered.columns if col not in ['
 data_core_filtered_display = data_core_filtered[columns_to_display].reset_index(drop=True)
 
 st.dataframe(data_core_filtered_display, use_container_width=True)
+
+st.write("<br><br><br>", unsafe_allow_html=True)
+#Footer
+st.write("<p style='text-align: center;'>Made with ❤️ by &lt;/Dev.Team&gt; of AIESEC in Sri Lanka</p>", unsafe_allow_html=True)
